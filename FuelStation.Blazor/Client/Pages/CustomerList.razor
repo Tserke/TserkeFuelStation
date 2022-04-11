@@ -1,0 +1,73 @@
+﻿@page "/customerlist"
+@using FuelStation.Blazor.Shared
+@using System.Net.Http.Json;
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<h3>Customer List</h3>
+<button class="btn btn-primary" @onclick="AddItem" >Add</button>
+
+@if (isLoading)
+{
+    <p>Loading ...</p>
+}else{
+    
+     <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Card Number</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var customer in customerList)
+                {
+                    <tr>
+                        <td>@customer.Name</td>
+                        <td>@customer.Surname</td>
+                        <td>@customer.CardNumber</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditItem(customer)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteItem(customer)">Delete</button>
+                    </td>
+                    </tr>
+                }
+            </tbody>
+     </table>
+}
+
+@code {
+    List<CustomerListViewModel> customerList = new();
+    bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadItemsFromServer();
+        isLoading = false;
+    }
+
+    private async Task LoadItemsFromServer()
+    {
+        customerList = await httpClient.GetFromJsonAsync<List<CustomerListViewModel>>("customer");
+    }
+
+        async Task AddItem()
+    {
+        navigationManager.NavigateTo("/customerlist/edit");
+    }
+
+
+    async Task DeleteItem(CustomerListViewModel itemToDelete)
+    {
+        var response = await httpClient.DeleteAsync($"customer/{itemToDelete.Id}");
+        response.EnsureSuccessStatusCode();
+        await LoadItemsFromServer();
+    }
+
+    async Task EditItem(CustomerListViewModel itemToEdit)
+    {
+        navigationManager.NavigateTo($"/customerlist/edit/{itemToEdit.Id}");
+    }
+}
