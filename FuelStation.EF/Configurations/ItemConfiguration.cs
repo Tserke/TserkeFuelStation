@@ -16,13 +16,12 @@ namespace FuelStation.EF.Configurations
             builder.ToTable("Item");
             builder.HasKey(item => item.Id);
             builder.Property(item => item.Id).ValueGeneratedOnAdd();
-            //TODO: make code unique
+            builder.HasAlternateKey(item => item.Code);
             builder.Property(item => item.Description).HasMaxLength(maxLength: 200);
             //TODO: Maybe ItemType needed
             builder.Property(item => item.Price).HasColumnType("decimal(10,2)");
             builder.Property(item => item.Cost).HasColumnType("decimal(10,2)");
 
-            //TODO: Set Foreign keys
         }
     }
 }

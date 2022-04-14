@@ -69,13 +69,10 @@ else
         HttpResponseMessage response;
         if (Id == null || Id == 0)
         {
-            TransactionLine.TransactionId = 1;
-            TransactionLine.ItemId = 1;
             response = await httpClient.PostAsJsonAsync("transactionLine", TransactionLine);
         }
         else
-        {   TransactionLine.TransactionId = 1;
-            TransactionLine.ItemId = 1;
+        {   
             response = await httpClient.PutAsJsonAsync("transactionLine", TransactionLine);
         }
         response.EnsureSuccessStatusCode();

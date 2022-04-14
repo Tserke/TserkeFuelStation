@@ -18,7 +18,7 @@ namespace FuelStation.EF.Configurations
             builder.Property(customer => customer.Id).ValueGeneratedOnAdd();
             builder.Property(customer => customer.Name).HasMaxLength(maxLength:100).IsRequired();
             builder.Property(customer => customer.Surname).HasMaxLength(maxLength: 100).IsRequired();
-            //TODO: make CardNumber to be unique
+            builder.HasAlternateKey(customer => customer.CardNumber);
 
             //TODO: I need to set foreign keys if needed
         }
