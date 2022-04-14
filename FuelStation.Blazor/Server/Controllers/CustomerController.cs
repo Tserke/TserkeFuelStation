@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FuelStation.Blazor.Server.Controllers
 {
     [ApiController]
-    [Route("Controller")]
+    [Route("[Controller]")]
     public class CustomerController : ControllerBase
     {
         private readonly IEntityRepo<Customer> _customerRepo;
@@ -18,12 +18,12 @@ namespace FuelStation.Blazor.Server.Controllers
         public async Task<IEnumerable<CustomerListViewModel>> Get()
         {
             var result = await _customerRepo.GetAllAsync();
-            return result.Select(x => new CustomerListViewModel
+            return result.Select(customer => new CustomerListViewModel
             {
-                Id = x.Id,
-                Name = x.Name,
-                Surname = x.Surname,
-                CardNumber = x.CardNumber,
+                Id = customer.Id,
+                Name = customer.Name,
+                Surname = customer.Surname,
+                CardNumber = customer.CardNumber,
 
             });
         }

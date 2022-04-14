@@ -69,7 +69,7 @@ namespace FuelStation.EF.Migrations
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     PaymentMethod = table.Column<int>(type: "int", nullable: false),
-                    TotalValue = table.Column<double>(type: "float", nullable: false)
+                    TotalValue = table.Column<decimal>(type: "Decimal(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -96,7 +96,7 @@ namespace FuelStation.EF.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TransactionId = table.Column<int>(type: "int", nullable: false),
                     ItemId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<decimal>(type: "Decimal(10,2)", nullable: true),
                     ItemPrice = table.Column<decimal>(type: "Decimal(10,2)", nullable: true),
                     NetValue = table.Column<decimal>(type: "Decimal(10,2)", nullable: true),
                     DiscountPercent = table.Column<int>(type: "int", nullable: true),

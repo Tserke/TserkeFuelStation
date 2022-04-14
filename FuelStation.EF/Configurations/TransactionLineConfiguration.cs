@@ -16,7 +16,7 @@ namespace FuelStation.EF.Configurations
             builder.ToTable("TransactionLine");
             builder.HasKey(transactionLine => transactionLine.Id);
             builder.Property(transactionLine => transactionLine.Id).ValueGeneratedOnAdd();
-            builder.Property(transactionLine => transactionLine.Quantity).IsRequired();
+            builder.Property(transactionLine => transactionLine.Quantity).HasColumnType("Decimal(10,2)");
             builder.Property(transactionLine => transactionLine.ItemPrice).HasColumnType("Decimal(10,2)");
             builder.Property(transactionLine => transactionLine.NetValue).HasColumnType("Decimal(10,2)");
             builder.Property(transactionLine => transactionLine.DiscountValue).HasColumnType("Decimal(10,2)");

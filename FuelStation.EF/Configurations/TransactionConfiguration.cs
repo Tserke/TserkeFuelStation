@@ -16,6 +16,7 @@ namespace FuelStation.EF.Configurations
             builder.ToTable("Transaction");
             builder.HasKey(transaction => transaction.Id);
             builder.Property(transaction => transaction.Id).ValueGeneratedOnAdd();
+            builder.Property(transaction => transaction.TotalValue).HasColumnType("Decimal(10,2)");
             //TODO: Set foreign keys
 
             builder.HasOne(transaction => transaction.Customer).WithOne(customer => customer.Transaction).HasForeignKey<Transaction>(transaction => transaction.CustomerId);

@@ -1,0 +1,78 @@
+﻿@page "/employeelist"
+@using FuelStation.Blazor.Shared
+@using System.Net.Http.Json;
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<h3>Employee List</h3>
+<button class="btn btn-primary" @onclick="AddItem" >Add</button>
+
+@if (isLoading)
+{
+    <p>Loading ...</p>
+}else{
+    
+     <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Hire Date</th>
+                    <th>Dismissal Day</th>
+                    <th>Monthly Sallary</th>
+                    <th>Employee Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var employee in employeeList)
+                {
+                    <tr>
+                        <td>@employee.Name</td>
+                        <td>@employee.Surname</td>
+                        <td>@employee.HireDateStart</td>
+                        <td>@employee.HireDateEnd</td>
+                        <td>@employee.SallaryPerMonth</td>
+                        <td>@employee.EmployeeType</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditItem(employee)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteItem(employee)">Delete</button>
+                    </td>
+                    </tr>
+                }
+            </tbody>
+     </table>
+}
+
+@code {
+    List<EmployeeListViewModel> employeeList = new();
+    bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadItemsFromServer();
+        isLoading = false;
+    }
+
+    private async Task LoadItemsFromServer()
+    {
+        employeeList = await httpClient.GetFromJsonAsync<List<EmployeeListViewModel>>("employee");
+    }
+
+        async Task AddItem()
+    {
+        navigationManager.NavigateTo("/employeelist/edit");
+    }
+
+
+    async Task DeleteItem(EmployeeListViewModel itemToDelete)
+    {
+        var response = await httpClient.DeleteAsync($"employee/{itemToDelete.Id}");
+        response.EnsureSuccessStatusCode();
+        await LoadItemsFromServer();
+    }
+
+    async Task EditItem(EmployeeListViewModel itemToEdit)
+    {
+        navigationManager.NavigateTo($"/employeelist/edit/{itemToEdit.Id}");
+    }
+}

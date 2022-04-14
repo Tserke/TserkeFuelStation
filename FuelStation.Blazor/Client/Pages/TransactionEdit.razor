@@ -1,0 +1,69 @@
+﻿@page "/transactionlist/edit/{Id:int?}"
+@using FuelStation.Blazor.Shared
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<h3>TransactionEdit</h3>
+
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-label">date</label>
+            <input class="form-control" @bind="@transactionItem.Date" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">employeeid</label>
+            <input class="form-control" @bind="@transactionItem.EmployeeId" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">customerid</label>
+            <input class="form-control" @bind="@transactionItem.CustomerId" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">paymentmethod</label>
+            <input class="form-control" @bind="@transactionItem.PaymentMethod" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">totalvalue</label>
+            <input class="form-control" @bind="@transactionItem.TotalValue" />
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col">
+            <button class="btn btn-success" @onclick="OnSave">Save</button>
+            <button class="btn btn-danger" @onclick="OnCancel">Cancel</button>
+        </div>
+    </div>
+
+@code {
+
+    [Parameter] public int? Id { get; set; }
+    TransactionListViewModel transactionItem { get; set; } = new();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+            transactionItem = await httpClient.GetFromJsonAsync<TransactionListViewModel>($"transaction/{(Id == null ? 0 : Id)}");
+    }
+
+    protected async Task OnSave()
+    {
+        HttpResponseMessage response;
+        if (Id == null || Id == 0)
+        {
+            response = await httpClient.PostAsJsonAsync("transaction", transactionItem);
+        }
+        else
+        {
+            response = await httpClient.PutAsJsonAsync("transaction", transactionItem);
+        }
+        response.EnsureSuccessStatusCode();
+        navigationManager.NavigateTo("transactionlist");
+    }
+
+    protected void OnCancel()
+    {
+        navigationManager.NavigateTo("transactionlist");
+    }
+}

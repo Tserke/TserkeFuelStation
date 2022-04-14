@@ -6,12 +6,6 @@ using System.Threading.Tasks;
 
 namespace FuelStation.Model
 {
-    public enum EmployeeTypeEnum
-    {
-        Manager,
-        Staff,
-        Cashier
-    }
     public class Employee : Person
     {
         public DateTime HireDateStart { get; set; }

@@ -1,12 +1,13 @@
-﻿using System;
+﻿using FuelStation.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FuelStation.Model
+namespace FuelStation.Blazor.Shared
 {
-    public class Transaction
+    public class TransactionListViewModel
     {
         public int Id { get; set; }
         public DateTime Date { get; set; } = DateTime.Now;
@@ -16,12 +17,6 @@ namespace FuelStation.Model
         public decimal TotalValue { get; set; }
         public Employee Employee { get; set; }
         public Customer Customer { get; set; }
-        public List<TransactionLine> TransactionLines { get; set; }
-
-        public Transaction()
-        {
-
-        }
-
+        public List<TransactionListViewModel> TransactionLineList { get; set; }
     }
 }

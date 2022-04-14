@@ -1,0 +1,89 @@
+﻿@page "/transactionLineList/edit/{Id:int?}"
+@using FuelStation.Blazor.Shared
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+<h3>TransactionLine</h3>
+
+@if (TransactionLine == null)
+{
+    <p>Loading ...</p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-label">Code</label>
+            <input class="form-control" @bind="@TransactionLine.Id" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Description</label>
+            <input class="form-control" @bind="@TransactionLine.TransactionId" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">quantity</label>
+            <input class="form-control" @bind="@TransactionLine.Quantity" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Item Price</label>
+            <input class="form-control" @bind="@TransactionLine.ItemPrice" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Net Value</label>
+            <input class="form-control" @bind="@TransactionLine.NetValue" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Discount Percent</label>
+            <input class="form-control" @bind="@TransactionLine.DiscountPercent" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Discount Value</label>
+            <input class="form-control" @bind="@TransactionLine.DiscountValue" />
+        </div>
+        <div class="col-md-6">
+        <label class="form-label">Total Value</label>
+            <input class="form-control" @bind="@TransactionLine.TotalValue" />
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col">
+            <button class="btn btn-success" @onclick="OnSave">Save</button>
+            <button class="btn btn-danger" @onclick="OnCancel">Cancel</button>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public int? Id { get; set; }
+    TransactionLineEditListViewModel TransactionLine { get; set; } = new();
+    ItemEditListViewModel Item { get; set; } = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        TransactionLine = await httpClient.GetFromJsonAsync<TransactionLineEditListViewModel>($"transactionLine/{(Id == null ? 0 : Id)}");
+    }
+
+    protected async Task OnSave()
+    {
+        HttpResponseMessage response;
+        if (Id == null || Id == 0)
+        {
+            TransactionLine.TransactionId = 1;
+            TransactionLine.ItemId = 1;
+            response = await httpClient.PostAsJsonAsync("transactionLine", TransactionLine);
+        }
+        else
+        {   TransactionLine.TransactionId = 1;
+            TransactionLine.ItemId = 1;
+            response = await httpClient.PutAsJsonAsync("transactionLine", TransactionLine);
+        }
+        response.EnsureSuccessStatusCode();
+        navigationManager.NavigateTo("transactionLineList");
+    }
+
+    protected void OnCancel()
+    {
+        navigationManager.NavigateTo("transactionLineList");
+    }
+}

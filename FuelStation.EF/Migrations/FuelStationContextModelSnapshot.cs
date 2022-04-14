@@ -135,8 +135,8 @@ namespace FuelStation.EF.Migrations
                     b.Property<int>("PaymentMethod")
                         .HasColumnType("int");
 
-                    b.Property<double>("TotalValue")
-                        .HasColumnType("float");
+                    b.Property<decimal>("TotalValue")
+                        .HasColumnType("Decimal(10,2)");
 
                     b.HasKey("Id");
 
@@ -151,11 +151,11 @@ namespace FuelStation.EF.Migrations
 
             modelBuilder.Entity("FuelStation.Model.TransactionLine", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("DiscountPercent")
                         .HasColumnType("int");
@@ -173,9 +173,8 @@ namespace FuelStation.EF.Migrations
                     b.Property<decimal?>("NetValue")
                         .HasColumnType("Decimal(10,2)");
 
-                    b.Property<int?>("Quantity")
-                        .IsRequired()
-                        .HasColumnType("int");
+                    b.Property<decimal?>("Quantity")
+                        .HasColumnType("Decimal(10,2)");
 
                     b.Property<decimal?>("TotalValue")
                         .HasColumnType("Decimal(10,2)");

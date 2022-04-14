@@ -17,8 +17,7 @@ builder.Services.AddTransient<IEntityRepo<Customer>, CustomerRepo>();
 builder.Services.AddTransient<IEntityRepo<Employee>, EmployeeRepo>();
 builder.Services.AddTransient<IEntityRepo<Item>, ItemRepo>();
 builder.Services.AddTransient<IEntityRepo<Transaction>, TransactionRepo>();
-builder.Services.AddTransient<IEntityRepo<TransactionLine>, 
-    TransactionLineRepo>();
+builder.Services.AddTransient<IEntityRepo<TransactionLine>, TransactionLineRepo>();
 
 var app = builder.Build();
 

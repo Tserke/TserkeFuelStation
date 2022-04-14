@@ -1,0 +1,79 @@
+﻿@page "/employeelist/edit/{Id:int?}"
+@using FuelStation.Blazor.Shared
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<h3>Employee</h3>
+
+@if (EmpoyeeItem == null)
+{
+    <p>Loading ...</p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-label">Name</label>
+            <input class="form-control" @bind="@EmpoyeeItem.Name" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Surname</label>
+            <input class="form-control" @bind="@EmpoyeeItem.Surname" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Hire Date</label>
+            <input class="form-control" @bind="@EmpoyeeItem.HireDateStart" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Dismissal Day</label>
+            <input class="form-control" @bind="@EmpoyeeItem.HireDateEnd" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Monthly Sallary</label>
+            <input class="form-control" @bind="@EmpoyeeItem.SallaryPerMonth" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Employee Title</label>
+            <input class="form-control" @bind="@EmpoyeeItem.EmployeeType" />
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col">
+            <button class="btn btn-success" @onclick="OnSave">Save</button>
+            <button class="btn btn-danger" @onclick="OnCancel">Cancel</button>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public int? Id { get; set; }
+    EmployeeEditListViewModel EmpoyeeItem { get; set; } = new();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+            EmpoyeeItem = await httpClient.GetFromJsonAsync<EmployeeEditListViewModel>($"employee/{(Id == null ? 0 : Id)}");
+    }
+
+    protected async Task OnSave()
+    {
+        HttpResponseMessage response;
+        if (Id == null || Id == 0)
+        {
+            response = await httpClient.PostAsJsonAsync("employee", EmpoyeeItem);
+        }
+        else
+        {
+            response = await httpClient.PutAsJsonAsync("employee", EmpoyeeItem);
+        }
+        response.EnsureSuccessStatusCode();
+        navigationManager.NavigateTo("employeelist");
+    }
+
+    protected void OnCancel()
+    {
+        navigationManager.NavigateTo("employeelist");
+    }
+}

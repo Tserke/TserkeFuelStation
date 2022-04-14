@@ -1,0 +1,76 @@
+﻿@page "/itemlist"
+@using FuelStation.Blazor.Shared
+@using System.Net.Http.Json;
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<h3>Item List</h3>
+<button class="btn btn-primary" @onclick="AddItem" >Add</button>
+
+@if (isLoading)
+{
+    <p>Loading ...</p>
+}else{
+    
+     <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Description</th>
+                    <th>Item Type</th>
+                    <th>Price</th>
+                    <th>Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in itemList)
+                {
+                    <tr>
+                        <td>@item.Code</td>
+                        <td>@item.Description</td>
+                        <td>@item.ItemType</td>
+                        <td>@item.Price</td>
+                        <td>@item.Cost</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditItem(item)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteItem(item)">Delete</button>
+                    </td>
+                    </tr>
+                }
+            </tbody>
+     </table>
+}
+
+@code {
+    List<ItemListViewModel> itemList = new();
+    bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadItemsFromServer();
+        isLoading = false;
+    }
+
+    private async Task LoadItemsFromServer()
+    {
+        itemList = await httpClient.GetFromJsonAsync<List<ItemListViewModel>>("item");
+    }
+
+        async Task AddItem()
+    {
+        navigationManager.NavigateTo("/itemlist/edit");
+    }
+
+
+    async Task DeleteItem(ItemListViewModel itemToDelete)
+    {
+        var response = await httpClient.DeleteAsync($"item/{itemToDelete.Id}");
+        response.EnsureSuccessStatusCode();
+        await LoadItemsFromServer();
+    }
+
+    async Task EditItem(ItemListViewModel itemToEdit)
+    {
+        navigationManager.NavigateTo($"/itemlist/edit/{itemToEdit.Id}");
+    }
+}

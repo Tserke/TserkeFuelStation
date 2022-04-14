@@ -12,10 +12,10 @@ namespace FuelStation.EF.MockRepositories
     {
         private List<Item> _items = new List<Item>
         {
-            new Item(){Id = 1, Code = "00001", Description="Petrol",ItemType=ItemTypeEnum.Fuel,Price=1.987,Cost=1.275},
-            new Item(){Id = 2, Code = "00002", Description="Diesel", ItemType=ItemTypeEnum.Fuel,Price=1.687, Cost=0.987},
-            new Item(){Id = 3, Code = "00003", Description="Engine Oil",ItemType=ItemTypeEnum.Product, Price= 25.50,Cost=12.5},
-            new Item(){Id = 4, Code = "00004", Description="Oil Change", ItemType = ItemTypeEnum.Service, Price = 10,Cost=3.50}
+            new Item(){Id = 1, Code = "00001", Description="Petrol",ItemType=ItemTypeEnum.Fuel,Price=1.987m,Cost=1.275m},
+            new Item(){Id = 2, Code = "00002", Description="Diesel", ItemType=ItemTypeEnum.Fuel,Price=1.687m, Cost=0.987m},
+            new Item(){Id = 3, Code = "00003", Description="Engine Oil",ItemType=ItemTypeEnum.Product, Price= 25.50m,Cost=12.5m},
+            new Item(){Id = 4, Code = "00004", Description="Oil Change", ItemType = ItemTypeEnum.Service, Price = 10m,Cost=3.50m}
         };
 
         public Task AddAsync(Item entity)

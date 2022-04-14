@@ -53,7 +53,7 @@
         customerList = await httpClient.GetFromJsonAsync<List<CustomerListViewModel>>("customer");
     }
 
-        async Task AddItem()
+    async Task AddItem()
     {
         navigationManager.NavigateTo("/customerlist/edit");
     }

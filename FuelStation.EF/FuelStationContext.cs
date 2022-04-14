@@ -11,11 +11,11 @@ namespace FuelStation.EF.Context
 {
     public class FuelStationContext : DbContext
     {
-
+        private readonly string _connectionString;
 
         public FuelStationContext()
         {
-
+            _connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Database=FuelStation;";
         }
 
         public DbSet<Customer> Customers { get; set; }
@@ -39,12 +39,10 @@ namespace FuelStation.EF.Context
             base.OnModelCreating(modelBuilder);
         }
 
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            var connString = @"Data Source=DESKTOP-AJIPLUG\SQLEXPRESS;initial catalog = FuelStationDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-            optionsBuilder.UseSqlServer(connString);
+            optionsBuilder.UseSqlServer(_connectionString);
         }
 
     }

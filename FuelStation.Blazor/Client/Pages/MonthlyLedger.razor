@@ -1,0 +1,186 @@
+﻿@page "/monthlyLedgerList"
+@using FuelStation.Blazor.Shared
+@using FuelStation.Model
+@inject IJSRuntime jsRuntime
+@inject HttpClient httpClient
+
+<h3>MonthlyLedger</h3>
+
+@if (isLoading)
+{
+    <h1>Loading ...</h1>
+}
+else{
+      <table>
+    <thead>
+        <tr>
+            <th>Month</th>
+            <th>Year</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        <tr>
+            <td>
+                <EditForm Model="@MonthName">
+                    <InputSelect @bind-Value="MonthName">
+                       
+                        
+                            
+                            @foreach(var month in Enum.GetValues(typeof(MonthEnum)))
+                            {
+                                if ((MonthEnum)month ==MonthEnum.None )
+                                {
+                                <option class="btn btn-secondary dropdown-toggle" value="@month">Select A Month</option>
+                                }
+                                else
+                                {
+                                <option class="btn btn-secondary dropdown-toggle" value="@month">@month</option>
+                                }
+                            
+                            }   
+                            
+                               
+                    </InputSelect>
+                </EditForm>
+            </td>
+            <td>
+                <input class="form-control" @bind=year placeholder="Year" />
+            </td>
+            <td>
+                
+                <button class="btn btn-danger btn-sm" @onclick=Total >Calculate</button>
+            </td>
+                
+
+    
+        </tr>      
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>
+                    Total
+                </th>
+                <th>
+                    Income
+                </th>
+                <th>
+                    Expenses
+                </th>
+                <th>
+                    Year
+                </th>
+                <th>
+                    Month
+                </th>
+
+            </tr>
+         </thead>
+         <tbody>
+             <tr>
+                 <td>@total</td>
+                 <td>@IncomeList</td>
+                 <td>@ExpensesList</td>
+                 <td>@year</td>
+                <td>@if ((MonthEnum)MonthName !=MonthEnum.None )
+                    {
+                        @MonthName
+                    }
+
+                 
+                 </td>
+             </tr>
+
+         </tbody>
+
+
+
+    </table>
+   
+}
+      
+
+
+@code{
+    //TODO:NEEDS WORK
+    private List<MonthlyLedgerViewModel> _monthlyLedgerView = new();
+    private bool isLoading = true;
+    private decimal? IncomeList=null;
+    private decimal? ExpensesList = null;
+    private decimal? total = null;
+
+    private int? year=null;
+
+    public MonthEnum MonthName=new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var l = total;
+        isLoading = true;
+        await LoadExpensesFromServer();
+        //await ExpensesCalculation();
+        //await IncomeCalculation();
+        isLoading = false;
+    }
+
+    private async Task LoadExpensesFromServer()
+    {
+        //_managerList = await httpClient.GetFromJsonAsync<List<ManagerViewModel>>("managers");
+        //_engineerList = await httpClient.GetFromJsonAsync<List<EngineerViewModel>>("engineer");
+        //_transaction = await httpClient.GetFromJsonAsync<List<TransactionViewModel>>("transaction");
+    }
+
+    private void  IncomeCalculation()
+    {
+        //var month=(int)monthEnum;
+        //var yearNumber = (int)year;
+        //IncomeList = 0;
+        //IncomeList = _transaction.Where(x=>x.Date.Month==month && x.Date.Year==yearNumber).Sum(x => x.TotalPrice);
+
+    }
+
+    private void ExpensesCalculation()
+    {
+        //ExpensesList = 0;
+        //engineerExpenses = 0;
+        //managerExpenses = 0;
+        //var month=(int)monthEnum;
+        //var yearNumber = (int)year;
+
+        //var managerlistId = _transaction.DistinctBy(x => x.ManagerID).Select(x=>x.ManagerID);
+        //var newmanagerlist = _managerList.Where(x => managerlistId.Contains(x.ID));
+
+        //ExpensesList = _transaction.Where(x => managerlistId.Contains(x.ManagerID)).Sum(x => x.TotalPrice) - newmanagerlist.Sum(x => x.SalaryPerMonth) ;
+
+        //foreach (var engineer in _engineerList)
+        //{
+        //    engineerExpenses += engineer.SalaryPerMonth;            
+        //}
+        //foreach (var manager in _managerList)
+        //{
+        //    managerExpenses += manager.SalaryPerMonth;            
+        //}
+
+        //ExpensesList = engineerExpenses + managerExpenses;
+    }
+    async Task Total()
+    {
+        ExpensesCalculation();
+        IncomeCalculation();
+
+        total = IncomeList - ExpensesList;
+    }
+
+   
+}

@@ -1,0 +1,68 @@
+﻿@page "/transactionlist"
+@using FuelStation.Blazor.Shared
+@using System.Net.Http.Json;
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<h3>Transaction List</h3>
+<button class="btn btn-primary" @onclick="AddItem" >Add</button>
+    <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>date</th>
+                    <th>employee</th>
+                    <th>Customer</th>
+                    <th>payment method</th>
+                    <th>Total Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var transaction in transactionList)
+                {
+                    <tr>
+                        <td>@transaction.Date</td>
+                        <td>@transaction.Employee.Name</td>
+                        <td>@transaction.Customer.Name</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditItem(transaction)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteItem(transaction)">Delete</button>
+                    </td>
+                    </tr>
+                }
+            </tbody>
+     </table>
+
+@code {
+    List<TransactionListViewModel> transactionList = new();
+    bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadItemsFromServer();
+        isLoading = false;
+    }
+
+    private async Task LoadItemsFromServer()
+    {
+        transactionList = await httpClient.GetFromJsonAsync<List<TransactionListViewModel>>("transaction");
+    }
+
+    async Task AddItem()
+    {
+        navigationManager.NavigateTo("/transactionlist/edit");
+    }
+
+
+    async Task DeleteItem(TransactionListViewModel itemToDelete)
+    {
+        var response = await httpClient.DeleteAsync($"transaction/{itemToDelete.Id}");
+        response.EnsureSuccessStatusCode();
+        await LoadItemsFromServer();
+    }
+
+    async Task EditItem(TransactionListViewModel itemToEdit)
+    {
+        navigationManager.NavigateTo($"/transactionlist/edit/{itemToEdit.Id}");
+    }
+}

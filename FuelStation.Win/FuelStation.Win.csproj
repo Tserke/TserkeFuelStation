@@ -1,13 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="devexpress.win.design" Version="21.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -15,10 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FuelStation.Blazor\Server\FuelStation.Blazor.Server.csproj" />
     <ProjectReference Include="..\FuelStation.Blazor\Shared\FuelStation.Blazor.Shared.csproj" />
-    <ProjectReference Include="..\FuelStation.EF\FuelStation.EF.csproj" />
-    <ProjectReference Include="..\FuelStation.Model\FuelStation.Model.csproj" />
   </ItemGroup>
 
 </Project>

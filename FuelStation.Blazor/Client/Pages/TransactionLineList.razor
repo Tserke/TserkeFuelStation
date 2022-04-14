@@ -1,0 +1,85 @@
+﻿@page "/transactionLineList"
+@using FuelStation.Blazor.Shared
+@using System.Net.Http.Json;
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<h3>TransactionLine List</h3>
+<button class="btn btn-primary" @onclick="AddItem" >Add</button>
+
+@if (isLoading)
+{
+    <p>Loading ...</p>
+}else{
+    
+     <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>TransactionId</th>
+                    <th>ItemId</th>
+                    <th>Quantity</th>
+                    <th>ItemPrice</th>
+                    <th>NetValue</th>
+                    <th>DiscountPercent</th>
+                    <th>DiscountValue</th>
+                    <th>TotalValue</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var transactionLine in transactionLineList)
+                {
+                    <tr>
+                        <td>@transactionLine.Id</td>
+                        <td>@transactionLine.TransactionId</td>
+                        <td>@transactionLine.ItemId</td>
+                        <td>@transactionLine.Quantity</td>
+                        <td>@transactionLine.ItemPrice</td>
+                        <td>@transactionLine.NetValue</td>
+                        <td>@transactionLine.DiscountPercent</td>
+                        <td>@transactionLine.DiscountValue</td>
+                        <td>@transactionLine.TotalValue</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditItem(transactionLine)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteItem(transactionLine)">Delete</button>
+                    </td>
+                    </tr>
+                }
+            </tbody>
+     </table>
+}
+
+@code {
+    List<TransactionLineListViewModel> transactionLineList = new();
+    bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadItemsFromServer();
+        isLoading = false;
+    }
+
+    private async Task LoadItemsFromServer()
+    {
+        transactionLineList = await httpClient.GetFromJsonAsync<List<TransactionLineListViewModel>>("transactionLine");
+    }
+
+    async Task AddItem()
+    {
+        navigationManager.NavigateTo("/transactionLineList/edit");
+    }
+
+
+    async Task DeleteItem(TransactionLineListViewModel itemToDelete)
+    {
+        var response = await httpClient.DeleteAsync($"transactionLine/{itemToDelete.Id}");
+        response.EnsureSuccessStatusCode();
+        await LoadItemsFromServer();
+    }
+
+    async Task EditItem(TransactionLineListViewModel itemToEdit)
+    {
+        navigationManager.NavigateTo($"/transactionLineList/edit/{itemToEdit.Id}");
+    }
+}
