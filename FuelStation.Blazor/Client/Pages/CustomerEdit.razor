@@ -11,6 +11,7 @@
 }
 else
 {
+<EditForm Model="@CustomerItem" OnValidSubmit="@OnSave">
     <div class="row">
         <div class="col-md-6">
             <label class="form-label">Name</label>
@@ -22,27 +23,28 @@ else
         </div>
         <div class="col-md-6">
             <label class="form-label">Card Number</label>
-            <input class="form-control" @bind="@CustomerItem.CardNumber" />
+            <input class="form-control"  @bind="@_cardNumber" pattern="(^[A-a][0-9]+)$" 
+            title="Card Number must start with 'A' and then numbers"/>
         </div>
     </div>
-
     <div class="row mt-2">
         <div class="col">
-            <button class="btn btn-success" @onclick="OnSave">Save</button>
+            <button class="btn btn-success" type="submit" @*@onclick="OnSave"*@>Save</button>
             <button class="btn btn-danger" @onclick="OnCancel">Cancel</button>
         </div>
     </div>
+</EditForm>
 }
 
 @code {
     [Parameter] public int? Id { get; set; }
     CustomerEditListViewModel CustomerItem { get; set; } = new();
-
+    private string _cardNumber;
 
 
     protected override async Task OnInitializedAsync()
     {
-            CustomerItem = await httpClient.GetFromJsonAsync<CustomerEditListViewModel>($"customer/{(Id == null ? 0 : Id)}");
+        CustomerItem = await httpClient.GetFromJsonAsync<CustomerEditListViewModel>($"customer/{(Id == null ? 0 : Id)}");
     }
 
     protected async Task OnSave()
@@ -50,6 +52,7 @@ else
         HttpResponseMessage response;
         if (Id == null || Id == 0)
         {
+            CustomerItem.CardNumber = _cardNumber;
             response = await httpClient.PostAsJsonAsync("customer", CustomerItem);
         }
         else

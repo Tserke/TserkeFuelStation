@@ -1,40 +1,47 @@
 ﻿@page "/employeelist/edit/{Id:int?}"
 @using FuelStation.Blazor.Shared
+@using FuelStation.Model
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 
 <h3>Employee</h3>
 
-@if (EmpoyeeItem == null)
+@if (Employee == null)
 {
     <p>Loading ...</p>
 }
 else
 {
+ <EditForm Model="Employee">
     <div class="row">
         <div class="col-md-6">
             <label class="form-label">Name</label>
-            <input class="form-control" @bind="@EmpoyeeItem.Name" />
+            <input class="form-control" @bind="@Employee.Name" />
         </div>
         <div class="col-md-6">
             <label class="form-label">Surname</label>
-            <input class="form-control" @bind="@EmpoyeeItem.Surname" />
+            <input class="form-control" @bind="@Employee.Surname" />
         </div>
         <div class="col-md-6">
             <label class="form-label">Hire Date</label>
-            <input class="form-control" @bind="@EmpoyeeItem.HireDateStart" />
+            <input class="form-control" placeholder="mm/dd/yyyy hh:mm:ss" @bind="@Employee.HireDateStart" />
         </div>
         <div class="col-md-6">
             <label class="form-label">Dismissal Day</label>
-            <input class="form-control" @bind="@EmpoyeeItem.HireDateEnd" />
+            <input class="form-control" placeholder="mm/dd/yyyy hh:mm:ss" @bind="@Employee.HireDateEnd" />
         </div>
         <div class="col-md-6">
             <label class="form-label">Monthly Sallary</label>
-            <input class="form-control" @bind="@EmpoyeeItem.SallaryPerMonth" />
+            <input class="form-control" @bind="@Employee.SallaryPerMonth" />
         </div>
-        <div class="col-md-6">
+       <div class="col-md-6">
             <label class="form-label">Employee Title</label>
-            <input class="form-control" @bind="@EmpoyeeItem.EmployeeType" />
+            <InputSelect class="form-select" @bind-Value="Employee.EmployeeType" >
+                @foreach (var item in Enum.GetValues(typeof(EmployeeTypeEnum)))
+                {
+                    <option value="@item">@item</option>
+                }
+            </InputSelect>
         </div>
     </div>
 
@@ -44,17 +51,18 @@ else
             <button class="btn btn-danger" @onclick="OnCancel">Cancel</button>
         </div>
     </div>
+</EditForm>
 }
 
 @code {
     [Parameter] public int? Id { get; set; }
-    EmployeeEditListViewModel EmpoyeeItem { get; set; } = new();
+    EmployeeEditListViewModel Employee { get; set; } = new();
 
 
 
     protected override async Task OnInitializedAsync()
     {
-            EmpoyeeItem = await httpClient.GetFromJsonAsync<EmployeeEditListViewModel>($"employee/{(Id == null ? 0 : Id)}");
+            Employee = await httpClient.GetFromJsonAsync<EmployeeEditListViewModel>($"employee/{(Id == null ? 0 : Id)}");
     }
 
     protected async Task OnSave()
@@ -62,11 +70,11 @@ else
         HttpResponseMessage response;
         if (Id == null || Id == 0)
         {
-            response = await httpClient.PostAsJsonAsync("employee", EmpoyeeItem);
+            response = await httpClient.PostAsJsonAsync("employee", Employee);
         }
         else
         {
-            response = await httpClient.PutAsJsonAsync("employee", EmpoyeeItem);
+            response = await httpClient.PutAsJsonAsync("employee", Employee);
         }
         response.EnsureSuccessStatusCode();
         navigationManager.NavigateTo("employeelist");

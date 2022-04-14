@@ -63,7 +63,7 @@ namespace FuelStation.Blazor.Server.Controllers
             {
                 Name = employee.Name,
                 Surname = employee.Surname,
-                HireDateStart = employee.HireDateStart,
+                HireDateStart = (DateTime)employee.HireDateStart,
                 HireDateEnd = employee.HireDateEnd,
                 SallaryPerMonth = employee.SallaryPerMonth,
                 EmployeeType = employee.EmployeeType,
