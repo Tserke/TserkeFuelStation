@@ -14,7 +14,7 @@ namespace FuelStation.Blazor.Shared
         public decimal Income { get; set; }
         public decimal Expenses { get; set; }
         public decimal Total { get; set; }
-
+        public decimal RentingCost {get; set; }
         public MonthEnum MonthEnum { get; set; }
     }
 }

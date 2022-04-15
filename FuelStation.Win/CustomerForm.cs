@@ -15,6 +15,8 @@ namespace FuelStation.Win
 {
     public partial class CustomerForm : Form
     {
+        public string newCardNumber {get; set;}
+        public bool FromTransactionLoadCustomer { get; set; }
         private int _selectedCustomerId;
         public CustomerForm()
         {
@@ -44,6 +46,8 @@ namespace FuelStation.Win
             customer.CardNumber = customerCardNumber;
             var response = await httpClient.PostAsJsonAsync("customer", customer);
             RefreshData();
+            if(FromTransactionLoadCustomer is true)
+                this.Close();
         }
         private async void btnUpdate_Click(object sender, EventArgs e)
         {
@@ -80,6 +84,10 @@ namespace FuelStation.Win
             txtName.Text = null;
             txtSurname.Text = null;
             txtCardNumber.Text = null;
+            if (FromTransactionLoadCustomer is true)
+            {
+                txtCardNumber.Text = newCardNumber;
+            }
 
         }
 

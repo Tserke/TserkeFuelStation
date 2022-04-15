@@ -55,13 +55,13 @@ else
 
 @code {
     [Parameter] public int? Id { get; set; }
-    TransactionLineEditListViewModel TransactionLine { get; set; } = new();
+    TransactionLineListViewModel TransactionLine { get; set; } = new();
     ItemEditListViewModel Item { get; set; } = new();
 
 
     protected override async Task OnInitializedAsync()
     {
-        TransactionLine = await httpClient.GetFromJsonAsync<TransactionLineEditListViewModel>($"transactionLine/{(Id == null ? 0 : Id)}");
+        TransactionLine = await httpClient.GetFromJsonAsync<TransactionLineListViewModel>($"transactionLine/{(Id == null ? 0 : Id)}");
     }
 
     protected async Task OnSave()

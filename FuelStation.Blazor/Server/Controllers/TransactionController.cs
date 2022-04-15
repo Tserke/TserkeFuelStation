@@ -51,7 +51,9 @@ namespace FuelStation.Blazor.Server.Controllers
             var newTransaction = new Transaction
             {
                 //Date = transactionRepo.Date,
+                Employee = transactionRepo.Employee,
                 EmployeeId = transactionRepo.EmployeeId,
+                Customer = transactionRepo.Customer,
                 CustomerId = transactionRepo.CustomerId,
                 PaymentMethod = transactionRepo.PaymentMethod,
                 TotalValue = transactionRepo.TotalValue,

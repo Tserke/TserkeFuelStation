@@ -33,9 +33,9 @@ namespace FuelStation.Blazor.Server.Controllers
             });
         }
         [HttpGet("{id}")]
-        public async Task<TransactionLineEditListViewModel> Get(int id)
+        public async Task<TransactionLineListViewModel> Get(int id)
         {
-            TransactionLineEditListViewModel model = new();
+            TransactionLineListViewModel model = new();
             if (id != 0)
             {
                 var existing = await _transactionLineRepo.GetByIdAsync(id);
@@ -52,7 +52,7 @@ namespace FuelStation.Blazor.Server.Controllers
             return model;
         }
         [HttpPost]
-        public async Task Post(TransactionLineEditListViewModel transactionLine)
+        public async Task Post(TransactionLineListViewModel transactionLine)
         {
             var newTransactionLine = new TransactionLine
             {
@@ -75,7 +75,7 @@ namespace FuelStation.Blazor.Server.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Put(TransactionLineEditListViewModel transactionLine)
+        public async Task<ActionResult> Put(TransactionLineListViewModel transactionLine)
         {
             var transactionLineToUpdate = await _transactionLineRepo.GetByIdAsync(transactionLine.Id);
             if (transactionLineToUpdate == null) return NotFound();
