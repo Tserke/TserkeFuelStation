@@ -1,0 +1,35 @@
+﻿@page "/cashierPage"
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" @onclick="LoadCustomers">Customer</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" @onclick="LoadEmployees">Employees</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" @onclick="LoadLedger">Monthly Ledger</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" @onclick="Logout">Logout</a>
+  </li>
+</ul>
+@code{
+    protected void LoadCustomers()
+    {
+        navigationManager.NavigateTo("customerlist");
+    }
+    protected void LoadEmployees()
+    {
+        navigationManager.NavigateTo("employeelist");
+    }
+    protected void LoadLedger()
+    {
+        navigationManager.NavigateTo("monthlyLedgerList");
+    }
+    protected void Logout()
+    {
+        navigationManager.NavigateTo("/");
+    }
+}

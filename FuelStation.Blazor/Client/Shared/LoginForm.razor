@@ -1,0 +1,89 @@
+﻿@page "/"
+@using FuelStation.Blazor.Shared
+@using FuelStation.Model
+@inject NavigationManager navigationManager
+@inject HttpClient httpClient
+@inject IJSRuntime jsRuntime
+
+<h3>LoginForm</h3>
+
+<section class="vh-100" style="background-color: #b3b3b3;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-xl-7">
+        <div class="card" style="border-radius: 4rem;">
+          <div class="row g-0">
+            <div class="col-md-6 col-lg-6 d-flex align-items-center">
+              <div class="card-body p-4 p-lg-5 text-black">
+
+                <form>
+
+                  <h4 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Manager Account</h4>
+
+                  <div class="form-outline mb-4">
+                    <input @bind="_username" id="UsernameForm" class="form-control form-control-lg" placeholder="Enter Manager"/>
+                    <label class="form-label" for="form2Example17">Username</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input @bind="_password" type="password"   id="passwordForm" class="form-control form-control-lg" />
+                    <label class="form-label" for="form2Example27" placeholder="Enter Password">Password</label>
+                  </div>
+                  
+                  <div class="pt-1 mb-4">
+                    <button class="btn btn-dark btn-lg btn-block" type="button"@onclick="() => Login()"> Login</button>
+                  </div>
+
+                  <a href="/managers" class="small text-muted">Can't Find Manager</a>
+                  <br>
+                  <a href="/transactions" class="small text-muted">Back</a>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+@code
+{
+    List<EmployeeListViewModel> employeeList = new();
+    private string _username { get; set; }
+    private string _password { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadItemsFromServer();
+    }
+    private async Task LoadItemsFromServer()
+    {
+        employeeList = await httpClient.GetFromJsonAsync<List<EmployeeListViewModel>>("employee");
+    }
+
+    internal void Login()
+    {
+        foreach(var item in employeeList)
+        {
+            if(_username == item.Name && _password == item.Name + item.Surname)
+            {
+                if (item.EmployeeType == EmployeeTypeEnum.Manager)
+                {
+                    navigationManager.NavigateTo("managerPage");
+
+                }
+                if (item.EmployeeType == EmployeeTypeEnum.Cashier)
+                {
+                    navigationManager.NavigateTo("cashierPage");
+                }
+                if (item.EmployeeType == EmployeeTypeEnum.Staff)
+                {
+                    navigationManager.NavigateTo("itemList");
+                }
+            }
+        }
+    }
+}

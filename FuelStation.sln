@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuelStation.Model", "FuelSt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuelStation.EF", "FuelStation.EF\FuelStation.EF.csproj", "{D0BE7A4E-2C6F-4A3B-A6D2-A225BEA9111F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{93A760A9-F58F-4F5D-8355-6F796C8C7192}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuelStation.Blazor.Server", "FuelStation.Blazor\Server\FuelStation.Blazor.Server.csproj", "{0F8EFE42-CD9C-4364-8627-BD68C4A35CEE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuelStation.Blazor.Client", "FuelStation.Blazor\Client\FuelStation.Blazor.Client.csproj", "{862A055A-37E0-47EF-9493-4F971653E33B}"
@@ -31,10 +29,6 @@ Global
 		{D0BE7A4E-2C6F-4A3B-A6D2-A225BEA9111F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0BE7A4E-2C6F-4A3B-A6D2-A225BEA9111F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0BE7A4E-2C6F-4A3B-A6D2-A225BEA9111F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{93A760A9-F58F-4F5D-8355-6F796C8C7192}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{93A760A9-F58F-4F5D-8355-6F796C8C7192}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{93A760A9-F58F-4F5D-8355-6F796C8C7192}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{93A760A9-F58F-4F5D-8355-6F796C8C7192}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0F8EFE42-CD9C-4364-8627-BD68C4A35CEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0F8EFE42-CD9C-4364-8627-BD68C4A35CEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F8EFE42-CD9C-4364-8627-BD68C4A35CEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
